@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
+<!--NOTICE: Please open this file in your web browser. If presented with a security warning, you may safely tell it to allow the blocked content.-->
+<!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD.\nAlthough MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD.\nNo support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.5.xsd">
+	<header>
+		<meta name="generator" content="MODX file generated with PP MODX Creator by tumba25 (online version)"/>
+		<license><![CDATA[http://opensource.org/licenses/gpl-license.php GNU General Public License v2]]></license>
+		<title lang="en"><![CDATA[eMosbat's TinyMCE Integration]]></title>
+		<description lang="en"><![CDATA[TinyMCE WYSIWYG Editor Integration with support of Smilies and custom BBCodes.]]></description>
+		<author-group>
+			<author>
+				<realname><![CDATA[Mehdi R.]]></realname>
+				<username><![CDATA[emosbat]]></username>
+				<homepage><![CDATA[http://forum.emosbat.com]]></homepage>
+				<email><![CDATA[contact@emosbat.com]]></email>
+			</author>
+		</author-group>
+		<mod-version>1.0.3</mod-version>
+		<installation>
+			<level>easy</level>
+			<time>120</time>
+			<target-version>3.0.10</target-version>
+		</installation>
+		<history>
+			<entry>
+				<date>2012-08-05</date>
+				<rev-version>1.0.1</rev-version>
+				<changelog lang="en">
+					<change><![CDATA[convert_urls should be false]]></change>
+					<change><![CDATA[font color fixed]]></change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2012-08-05</date>
+				<rev-version>1.0.2</rev-version>
+				<changelog lang="en">
+					<change><![CDATA[code clean up]]></change>
+					<change><![CDATA[support of attachments]]></change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2012-08-05</date>
+				<rev-version>1.0.3</rev-version>
+				<changelog lang="en">
+					<change><![CDATA[bbcode help text fix]]></change>
+				</changelog>
+			</entry>
+		</history>
+	</header>
+	<action-group>
+		<copy>
+			<file from="root/styles/prosilver/template/tiny_mce/*.*" to="styles/prosilver/template/tiny_mce/*.*"/>
+			<file from="root/images/bbcodes/*.*" to="images/bbcodes/*.*"/>
+			<file from="root/styles/prosilver/template/emo_tinymce.js" to="styles/prosilver/template/emo_tinymce.js"/>
+		</copy>
+		<open src="styles/prosilver/template/posting_editor.html">
+			<edit>
+				<find><![CDATA[</script>
+]]></find>
+				<action type="after-add"><![CDATA[<script type="text/javascript" src="{T_TEMPLATE_PATH}/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript" src="{T_TEMPLATE_PATH}/emo_tinymce.js"></script>
+<script type="text/javascript">
+
+	var bbcode_images_path = "{T_IMAGES_PATH}bbcodes/";
+
+	var bbtags2 = new Array('[b]','[/b]','[i]','[/i]','[u]','[/u]','[quote]','[/quote]','[code]','[/code]','[list]','[/list]','[list=]','[/list]','[img]','[/img]','[url]','[/url]','[flash=]', '[/flash]','[size=]','[/size]'<!-- BEGIN custom_tags -->, {custom_tags.BBCODE_NAME}<!-- END custom_tags -->);
+
+	var la_arr = new Array('{LA_BBCODE_Q_HELP}','{LA_BBCODE_C_HELP}','{LA_BBCODE_L_HELP}','{LA_BBCODE_O_HELP}','{LA_BBCODE_LISTITEM_HELP}','{LA_BBCODE_D_HELP}');
+
+
+	function custom_phpbb_html2bbcode(s)
+	{
+			s = tinyMCE.trim(s);
+
+		<!-- BEGIN smiley -->
+		s = build_bbcode_regex(s,"<img src=\""+escapeReg("{smiley.SMILEY_IMG}")+"\"(.*?)\/>"," {smiley.A_SMILEY_CODE} ");
+		<!-- END smiley	-->
+
+			return s; 
+		}
+
+	function custom_phpbb_bbcode2html(s)
+	{
+			s = tinyMCE.trim(s);
+
+		<!-- BEGIN smiley --> 
+		s = build_bbcode_regex(s,escapeReg("{smiley.A_SMILEY_CODE}")," <img src=\"{smiley.SMILEY_IMG}\" /> ");
+		<!-- END smiley	-->
+
+			return s; 
+	}
+
+
+	editor = tinyMCE.init({
+		theme_advanced_font_sizes : "Tiny=50%,Small=85%,Normal=100%,Large=150%,Huge=200%",
+		mode : "none",
+		height : 320,
+		convert_urls : false,
+		theme : "advanced",
+		//directionality : "rtl",
+		plugins: "bbcode2",
+		theme_advanced_buttons1 : "code,bold,italic,underline,undo,redo,<!-- IF S_LINKS_ALLOWED -->link,unlink,<!-- ENDIF --><!-- IF S_BBCODE_IMG -->image,<!-- ENDIF -->fontsizeselect,forecolor,removeformat",
+		theme_advanced_buttons2 : "quote,code2,list,list2,item,<!-- IF S_BBCODE_FLASH -->flash<!-- ENDIF -->",
+		theme_advanced_buttons3 : "<!-- BEGIN custom_tags -->{custom_tags.BBCODE_TAG},<!-- END custom_tags -->",
+		entity_encoding : "raw",
+		add_unload_trigger : false,
+		remove_linebreaks : false,
+		inline_styles : false,
+		convert_fonts_to_spans : false
+		,setup : function(ed) {
+				
+				
+				add_default_buttons(ed,la_arr);
+
+<!-- BEGIN custom_tags -->
+		        ed.addButton('{custom_tags.BBCODE_TAG}', {
+		        title : '{custom_tags.BBCODE_HELPLINE}',
+		        label : '{custom_tags.BBCODE_TAG}',
+		        image : bbcode_images_path+'{custom_tags.BBCODE_TAG}.gif',
+		        onclick : function() {    
+		        ed.focus();   
+		        oldcnt = ed.selection.getContent();
+				ed.selection.setContent(bbtags2[{custom_tags.BBCODE_ID}]+oldcnt);
+		        //opos = ed.selection.getBookmark();
+				ed.selection.setContent(bbtags2[{custom_tags.BBCODE_ID}+1]);
+		        //if(oldcnt=='') ed.selection.moveToBookmark(opos);
+		        }
+		        });
+	<!-- END custom_tags -->
+
+		}
+	});
+
+if({S_BBCODE_ALLOWED}==1)
+{
+	tinyMCE.execCommand("mceAddControl", true, "message");
+}
+
+</script>
+]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[<!-- INCLUDE posting_buttons.html -->]]></find>
+				<action type="replace-with"><![CDATA[<!-- posting_buttons.html -->]]></action>
+			</edit>
+		</open>
+		<diy-instructions lang="en"><![CDATA[- To display icon for custom BBCode, upload 24x24 pixels gif image with same name of custom bbcode to images/bbcodes folder. for example for a custom bbcode with this name: youtube, upload youtube.gif to images/bbcodes folder.
+
+- You may download latest version of tinymce and upload 'tiny_mce' folder to styles/prosilver/template folder. in this case do not forget to copy bbcode2 tinymce plugin to plugins folder.]]></diy-instructions>
+	</action-group>
+</mod>
