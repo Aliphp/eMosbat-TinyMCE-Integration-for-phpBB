@@ -28,6 +28,24 @@ attach_inline = function(index, filename)
 		        tinyMCE.activeEditor.selection.setContent(oldcnt+'[attachment=' + index + ']' + filename + '[/attachment]');
 }
 
+function getTextNodes(node, nodeType, result)
+{ 
+ 
+    var children = node.childNodes; 
+    var nodeType = nodeType ? nodeType : 3; 
+ 
+    var result = !result ? [] : result; 
+    if (node.nodeType == nodeType) { 
+        result.push(node); 
+    } 
+ 
+    for (var i=0; i<children.length; i++) { 
+        result = this.getTextNodes(children[i], nodeType, result) 
+    } 
+ 
+    return result; 
+}
+
 function add_default_buttons(ed,la_arr)
 {
 	
@@ -35,90 +53,99 @@ function add_default_buttons(ed,la_arr)
 		        title : la_arr[0],
 		        label : 'Quote',  
 		        image : bbcode_images_path+'quote2.gif',
-		        onclick : function() {    
+		        onclick : function() {
 		 
 		        ed.focus();   
 		        oldcnt = ed.selection.getContent(); 
-		        ed.selection.setContent('[quote]'+oldcnt);
-		        //opos = ed.selection.getBookmark();
-		        ed.selection.setContent('[/quote]');
-		        //if(oldcnt=='') ed.selection.moveToBookmark(opos);
-		        }        
+		        ed.selection.setContent('[quote]'+oldcnt+'[/quote]');
+		        if(oldcnt=='')
+		        {
+		        textnodes = getTextNodes(ed.getBody().lastChild);
+		        ed.selection.setCursorLocation(textnodes[textnodes.length-1],textnodes[textnodes.length-1].textContent.length-8);
+		        }
+		        }
 		        });
 		    
 		        ed.addButton('code2', {
 		        title : la_arr[1],
 		        label : 'Code',
 		        image : bbcode_images_path+'code2.gif',
-		        onclick : function() {    
+		        onclick : function() {
 		 
 		        ed.focus();   
 		        oldcnt = ed.selection.getContent(); 
-		        ed.selection.setContent('[code]'+oldcnt);
-		        //opos = ed.selection.getBookmark();
-		        ed.selection.setContent('[/code]');
-		        //if(oldcnt=='') ed.selection.moveToBookmark(opos);
-		        }        
+		        ed.selection.setContent('[code]'+oldcnt+'[/code]');
+		        textnodes = getTextNodes(ed.getBody().lastChild);
+		        ed.selection.setCursorLocation(textnodes[textnodes.length-1],textnodes[textnodes.length-1].textContent.length-7);
+		        }
 		        });
 		    
 		        ed.addButton('list', {
 		        title : la_arr[2],
 		        label : 'List',
 		        image : bbcode_images_path+'list.gif',
-		        onclick : function() {    
+		        onclick : function() {
 		 
 		        ed.focus();   
 		        oldcnt = ed.selection.getContent(); 
-		        ed.selection.setContent('[list]'+oldcnt);
-		        //opos = ed.selection.getBookmark();
-		        ed.selection.setContent('[/list]');
-		        //if(oldcnt=='') ed.selection.moveToBookmark(opos);
-		        }        
+		        ed.selection.setContent('[list]'+oldcnt+'[/list]');
+		        if(oldcnt=='')
+		        {
+		        textnodes = getTextNodes(ed.getBody().lastChild);
+		        ed.selection.setCursorLocation(textnodes[textnodes.length-1],textnodes[textnodes.length-1].textContent.length-7);
+		        }
+		        }
 		        });
 		    
 		        ed.addButton('list2', {
 		        title : la_arr[3],
 		        label : 'List=',
 		        image : bbcode_images_path+'list2.gif',
-		        onclick : function() {    
+		        onclick : function() {
 		 
 		        ed.focus();   
 		        oldcnt = ed.selection.getContent(); 
-		        ed.selection.setContent('[list=]'+oldcnt);
-		        //opos = ed.selection.getBookmark();
-		        ed.selection.setContent('[/list]');
-		        //if(oldcnt=='') ed.selection.moveToBookmark(opos);
-		        }        
+		        ed.selection.setContent('[list=]'+oldcnt+'[/list]');
+		        if(oldcnt=='')
+		        {
+		        textnodes = getTextNodes(ed.getBody().lastChild);
+		        ed.selection.setCursorLocation(textnodes[textnodes.length-1],textnodes[textnodes.length-1].textContent.length-7);
+		        }
+		        }
 		        });
 		    
 		        ed.addButton('item', {
 		        title : la_arr[4],
 		        label : '[*]',
 		        image : bbcode_images_path+'item.gif',
-		        onclick : function() {    
+		        onclick : function() {
 		 
 		        ed.focus();   
 		        oldcnt = ed.selection.getContent(); 
-		        ed.selection.setContent('[*]'+oldcnt);
-		        //opos = ed.selection.getBookmark();
-		        ed.selection.setContent('[/*]');
-		        //if(oldcnt=='') ed.selection.moveToBookmark(opos);
-		        }        
+		        ed.selection.setContent('[*]'+oldcnt+'[/*]');
+		        if(oldcnt=='')
+		        {
+		        textnodes = getTextNodes(ed.getBody().lastChild);
+		        ed.selection.setCursorLocation(textnodes[textnodes.length-1],textnodes[textnodes.length-1].textContent.length-4);
+		        }
+		        }
 		        });
 		        
 		        ed.addButton('flash', {
 		        title : la_arr[5],
 		        label : 'Flash',
 		        image : bbcode_images_path+'flash.gif',
-		        onclick : function() {    
+		        onclick : function() {
 		 
 		        ed.focus();   
 		        oldcnt = ed.selection.getContent(); 
-		        ed.selection.setContent('[flash=]'+oldcnt);
-		        //opos = ed.selection.getBookmark();
-		        ed.selection.setContent('[/flash]');
-		        //if(oldcnt=='') ed.selection.moveToBookmark(opos);
-		        }        
+		        ed.selection.setContent('[flash=]'+oldcnt+'[/flash]');
+		        if(oldcnt=='')
+		        {
+		        textnodes = getTextNodes(ed.getBody().lastChild);
+		        ed.selection.setCursorLocation(textnodes[textnodes.length-1],textnodes[textnodes.length-1].textContent.length-8);
+		        }
+		        }
 		        });
 
 	

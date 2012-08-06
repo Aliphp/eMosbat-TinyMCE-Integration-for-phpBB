@@ -16,7 +16,7 @@
 				<email><![CDATA[contact@emosbat.com]]></email>
 			</author>
 		</author-group>
-		<mod-version>1.0.3</mod-version>
+		<mod-version>1.0.4</mod-version>
 		<installation>
 			<level>easy</level>
 			<time>120</time>
@@ -44,6 +44,14 @@
 				<rev-version>1.0.3</rev-version>
 				<changelog lang="en">
 					<change><![CDATA[bbcode help text fix]]></change>
+					<change><![CDATA[RTL added]]></change>
+				</changelog>
+			</entry>
+			<entry>
+				<date>2012-08-06</date>
+				<rev-version>1.0.4</rev-version>
+				<changelog lang="en">
+					<change><![CDATA[cursor position fix]]></change>
 				</changelog>
 			</entry>
 		</history>
@@ -121,13 +129,16 @@
 		        onclick : function() {    
 		        ed.focus();   
 		        oldcnt = ed.selection.getContent();
-				ed.selection.setContent(bbtags2[{custom_tags.BBCODE_ID}]+oldcnt);
-		        //opos = ed.selection.getBookmark();
-				ed.selection.setContent(bbtags2[{custom_tags.BBCODE_ID}+1]);
-		        //if(oldcnt=='') ed.selection.moveToBookmark(opos);
+				ed.selection.setContent(bbtags2[{custom_tags.BBCODE_ID}]+oldcnt+bbtags2[{custom_tags.BBCODE_ID}+1]);
+		        if(oldcnt=='')
+		        {
+		        	textnodes = getTextNodes(ed.getBody().lastChild);
+		        	ed.selection.setCursorLocation(textnodes[textnodes.length-1],textnodes[textnodes.length-1].textContent.length-bbtags2[{custom_tags.BBCODE_ID}+1].length);
+		        }
+
 		        }
 		        });
-	<!-- END custom_tags -->
+<!-- END custom_tags -->
 
 		}
 	});
