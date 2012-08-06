@@ -23,27 +23,20 @@ insert_text = function(text, spaces, popup)
 
 attach_inline = function(index, filename)
 {
-				tinyMCE.activeEditor.focus();   
-		        oldcnt = tinyMCE.activeEditor.selection.getContent();   
-		        tinyMCE.activeEditor.selection.setContent(oldcnt+'[attachment=' + index + ']' + filename + '[/attachment]');
+	insert_bbcode(tinyMCE.activeEditor,'[attachment=' + index + ']' + filename,'[/attachment]<span id="__caret">_</span>',true)
 }
 
-function getTextNodes(node, nodeType, result)
-{ 
- 
-    var children = node.childNodes; 
-    var nodeType = nodeType ? nodeType : 3; 
- 
-    var result = !result ? [] : result; 
-    if (node.nodeType == nodeType) { 
-        result.push(node); 
-    } 
- 
-    for (var i=0; i<children.length; i++) { 
-        result = this.getTextNodes(children[i], nodeType, result) 
-    } 
- 
-    return result; 
+
+function insert_bbcode(ed,open,close,caret)
+{
+
+		        ed.focus();   
+		        oldcnt = ed.selection.getContent(); 
+		        ed.selection.setContent(open+oldcnt+(caret==false?'<span id="__caret">_</span>':'')+close);
+		        
+		        caretNode = ed.dom.get('__caret');
+		        ed.dom.remove('__caret');
+
 }
 
 function add_default_buttons(ed,la_arr)
@@ -54,15 +47,7 @@ function add_default_buttons(ed,la_arr)
 		        label : 'Quote',  
 		        image : bbcode_images_path+'quote2.gif',
 		        onclick : function() {
-		 
-		        ed.focus();   
-		        oldcnt = ed.selection.getContent(); 
-		        ed.selection.setContent('[quote]'+oldcnt+'[/quote]');
-		        if(oldcnt=='')
-		        {
-		        textnodes = getTextNodes(ed.getBody().lastChild);
-		        ed.selection.setCursorLocation(textnodes[textnodes.length-1],textnodes[textnodes.length-1].textContent.length-8);
-		        }
+		        	insert_bbcode(ed,'[quote]','[/quote]',false);
 		        }
 		        });
 		    
@@ -71,12 +56,7 @@ function add_default_buttons(ed,la_arr)
 		        label : 'Code',
 		        image : bbcode_images_path+'code2.gif',
 		        onclick : function() {
-		 
-		        ed.focus();   
-		        oldcnt = ed.selection.getContent(); 
-		        ed.selection.setContent('[code]'+oldcnt+'[/code]');
-		        textnodes = getTextNodes(ed.getBody().lastChild);
-		        ed.selection.setCursorLocation(textnodes[textnodes.length-1],textnodes[textnodes.length-1].textContent.length-7);
+		        	insert_bbcode(ed,'[code]','[/code]',false);
 		        }
 		        });
 		    
@@ -85,15 +65,7 @@ function add_default_buttons(ed,la_arr)
 		        label : 'List',
 		        image : bbcode_images_path+'list.gif',
 		        onclick : function() {
-		 
-		        ed.focus();   
-		        oldcnt = ed.selection.getContent(); 
-		        ed.selection.setContent('[list]'+oldcnt+'[/list]');
-		        if(oldcnt=='')
-		        {
-		        textnodes = getTextNodes(ed.getBody().lastChild);
-		        ed.selection.setCursorLocation(textnodes[textnodes.length-1],textnodes[textnodes.length-1].textContent.length-7);
-		        }
+		        	insert_bbcode(ed,'[list]','[/list]',false);
 		        }
 		        });
 		    
@@ -102,15 +74,7 @@ function add_default_buttons(ed,la_arr)
 		        label : 'List=',
 		        image : bbcode_images_path+'list2.gif',
 		        onclick : function() {
-		 
-		        ed.focus();   
-		        oldcnt = ed.selection.getContent(); 
-		        ed.selection.setContent('[list=]'+oldcnt+'[/list]');
-		        if(oldcnt=='')
-		        {
-		        textnodes = getTextNodes(ed.getBody().lastChild);
-		        ed.selection.setCursorLocation(textnodes[textnodes.length-1],textnodes[textnodes.length-1].textContent.length-7);
-		        }
+		        	insert_bbcode(ed,'[list=]','[/list]',false);
 		        }
 		        });
 		    
@@ -119,15 +83,7 @@ function add_default_buttons(ed,la_arr)
 		        label : '[*]',
 		        image : bbcode_images_path+'item.gif',
 		        onclick : function() {
-		 
-		        ed.focus();   
-		        oldcnt = ed.selection.getContent(); 
-		        ed.selection.setContent('[*]'+oldcnt+'[/*]');
-		        if(oldcnt=='')
-		        {
-		        textnodes = getTextNodes(ed.getBody().lastChild);
-		        ed.selection.setCursorLocation(textnodes[textnodes.length-1],textnodes[textnodes.length-1].textContent.length-4);
-		        }
+		        	insert_bbcode(ed,'[*]','[/*]',false);
 		        }
 		        });
 		        
@@ -136,24 +92,16 @@ function add_default_buttons(ed,la_arr)
 		        label : 'Flash',
 		        image : bbcode_images_path+'flash.gif',
 		        onclick : function() {
-		 
-		        ed.focus();   
-		        oldcnt = ed.selection.getContent(); 
-		        ed.selection.setContent('[flash=]'+oldcnt+'[/flash]');
-		        if(oldcnt=='')
-		        {
-		        textnodes = getTextNodes(ed.getBody().lastChild);
-		        ed.selection.setCursorLocation(textnodes[textnodes.length-1],textnodes[textnodes.length-1].textContent.length-8);
-		        }
+		        	insert_bbcode(ed,'[flash]','[/flash]',false);
 		        }
 		        });
 
 	
 }
 
-
 function build_bbcode_regex(s,rg,rp)
 {
 		rgobj = new RegExp(rg,"gi");
 		return s.replace(rgobj,rp);
 }
+
