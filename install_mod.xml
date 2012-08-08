@@ -97,6 +97,30 @@
 ]]></action>
 			</edit>
 		</open>
+		<open src="includes/ucp/ucp_pm_compose.php">
+			<edit>
+				<find><![CDATA['S_BBCODE_ALLOWED'		=> ($bbcode_status) ? 1 : 0,]]></find>
+				<action type="after-add"><![CDATA[
+// eMosbat TinyMCE
+	'EMOTINYMCE_ENABLE'			=> ($config['emotinymce_enable']) ? 1 : 0,
+	'EMOTINYMCE_RTL'			=> ($config['emotinymce_rtl']) ? 1 : 0,
+	'EMOTINYMCE_WIDTH'			=> ($config['emotinymce_qwidth']),
+	'EMOTINYMCE_HEIGHT'			=> ($config['emotinymce_qheight']),
+	'EMOTINYMCE_SKIN'			=> ($config['emotinymce_skin'] != "" ? current(explode("@",$config['emotinymce_skin'])) : ""),
+	'EMOTINYMCE_SKIN_VAR'		=> ($config['emotinymce_skin'] != "" ? end(explode("@",$config['emotinymce_skin'])) : ""),
+	'EMOTINYMCE_SPELLCHECKER'	=> ($config['emotinymce_spellchecker']) ? 1 : 0,
+	'EMOTINYMCE_CAPTION'		=> ($config['emotinymce_caption']) ? 1 : 0,
+	'EMOTINYMCE_TIP'			=> ($config['emotinymce_tip']) ? 1 : 0,
+	'EMOTINYMCE_LANG'			=> ($config['emotinymce_lang']),
+	'S_SMILIES_ALLOWED'		=> $smilies_status,
+	'S_BBCODE_IMG'			=> $img_status,
+	'S_BBCODE_URL'			=> $url_status,
+	'S_BBCODE_FLASH'		=> $flash_status,
+	'S_BBCODE_QUOTE'		=> true,
+// eMosbat TinyMCE
+]]></action>
+			</edit>
+		</open>
 		<open src="styles/prosilver/template/posting_editor.html">
 			<edit>
 				<find><![CDATA[</script>
