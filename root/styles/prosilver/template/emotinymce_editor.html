@@ -89,8 +89,8 @@ editor = tinyMCE.init({
 
 <!-- BEGIN custom_tags -->
 		        ed.addButton('{custom_tags.BBCODE_TAG}', {
-		        title : (btip == 1 ? '{custom_tags.BBCODE_HELPLINE}' , ''),
-		        label : (bcaption == 1 ? '{custom_tags.BBCODE_TAG}' , ''),
+		        title : (btip == 1 ? '{custom_tags.BBCODE_HELPLINE}' : ''),
+		        label : (bcaption == 1 ? '{custom_tags.BBCODE_TAG}' : ''),
 		        image : bbcode_images_path+'{custom_tags.BBCODE_TAG}.gif',
 		        onclick : function() {
 		        	insert_bbcode(ed,bbtags2[{custom_tags.BBCODE_ID}],bbtags2[{custom_tags.BBCODE_ID}+1],false);
