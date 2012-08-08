@@ -39,12 +39,11 @@ function insert_bbcode(ed,open,close,caret)
 
 }
 
-function add_default_buttons(ed,la_arr)
+function add_default_buttons(ed,la_arr,bcaption,btip)
 {
-	
 		        ed.addButton('quote', {
-		        title : la_arr[0],
-		        label : 'Quote',  
+		        title : (bcaption == 1 ? la_arr[0] : ''),
+		        label : (btip == 1 ? 'Quote' : ''),  
 		        image : bbcode_images_path+'quote2.gif',
 		        onclick : function() {
 		        	insert_bbcode(ed,'[quote]','[/quote]',false);
@@ -52,8 +51,8 @@ function add_default_buttons(ed,la_arr)
 		        });
 		    
 		        ed.addButton('code2', {
-		        title : la_arr[1],
-		        label : 'Code',
+		        title : (bcaption == 1 ? la_arr[1] : ''),
+		        label : (btip == 1 ? 'Code' : ''),
 		        image : bbcode_images_path+'code2.gif',
 		        onclick : function() {
 		        	insert_bbcode(ed,'[code]','[/code]',false);
@@ -61,8 +60,8 @@ function add_default_buttons(ed,la_arr)
 		        });
 		    
 		        ed.addButton('list', {
-		        title : la_arr[2],
-		        label : 'List',
+		        title : (bcaption == 1 ? la_arr[2] : ''),
+		        label : (btip == 1 ? 'List' : ''),
 		        image : bbcode_images_path+'list.gif',
 		        onclick : function() {
 		        	insert_bbcode(ed,'[list]','[/list]',false);
@@ -70,8 +69,8 @@ function add_default_buttons(ed,la_arr)
 		        });
 		    
 		        ed.addButton('list2', {
-		        title : la_arr[3],
-		        label : 'List=',
+		        title : (bcaption == 1 ? la_arr[3] : ''),
+		        label : (btip == 1 ? 'List=' : ''),
 		        image : bbcode_images_path+'list2.gif',
 		        onclick : function() {
 		        	insert_bbcode(ed,'[list=]','[/list]',false);
@@ -79,8 +78,8 @@ function add_default_buttons(ed,la_arr)
 		        });
 		    
 		        ed.addButton('item', {
-		        title : la_arr[4],
-		        label : '[*]',
+		        title : (bcaption == 1 ? la_arr[4] : ''),
+		        label : (btip == 1 ? '[*]' : ''),
 		        image : bbcode_images_path+'item.gif',
 		        onclick : function() {
 		        	insert_bbcode(ed,'[*]','[/*]',false);
@@ -88,8 +87,8 @@ function add_default_buttons(ed,la_arr)
 		        });
 		        
 		        ed.addButton('flash', {
-		        title : la_arr[5],
-		        label : 'Flash',
+		        title : (bcaption == 1 ? la_arr[5] : ''),
+		        label : (btip == 1 ? 'Flash' : ''),
 		        image : bbcode_images_path+'flash.gif',
 		        onclick : function() {
 		        	insert_bbcode(ed,'[flash]','[/flash]',false);

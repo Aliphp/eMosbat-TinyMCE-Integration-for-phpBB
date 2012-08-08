@@ -16,7 +16,7 @@
 				<email><![CDATA[contact@emosbat.com]]></email>
 			</author>
 		</author-group>
-		<mod-version>1.0.4</mod-version>
+		<mod-version>1.5.0</mod-version>
 		<installation>
 			<level>easy</level>
 			<time>120</time>
@@ -54,101 +54,68 @@
 					<change><![CDATA[cursor position fix]]></change>
 				</changelog>
 			</entry>
+			<entry>
+				<date>2012-08-08</date>
+				<rev-version>1.5.0</rev-version>
+				<changelog lang="en">
+					<change><![CDATA[acp mod added]]></change>
+					<change><![CDATA[spellchecker support]]></change>
+					<change><![CDATA[interface customization]]></change>
+					<change><![CDATA[persian language support]]></change>
+				</changelog>
+			</entry>
 		</history>
 	</header>
 	<action-group>
 		<copy>
-			<file from="root/styles/prosilver/template/tiny_mce/*.*" to="styles/prosilver/template/tiny_mce/*.*"/>
+			<file from="root/adm/style/*.*" to="adm/style/*.*"/>
 			<file from="root/images/bbcodes/*.*" to="images/bbcodes/*.*"/>
+			<file from="root/includes/acp/*.*" to="includes/acp/*.*"/>
+			<file from="root/language/en/mods/*.*" to="language/en/mods/*.*"/>
+			<file from="root/language/fa/mods/*.*" to="language/fa/mods/*.*"/>
+			<file from="root/styles/prosilver/template/tiny_mce/*.*" to="styles/prosilver/template/tiny_mce/*.*"/>
 			<file from="root/styles/prosilver/template/emo_tinymce.js" to="styles/prosilver/template/emo_tinymce.js"/>
+			<file from="root/styles/prosilver/template/emotinymce_editor.html" to="styles/prosilver/template/emotinymce_editor.html"/>
+			<file from="root/emotinymce_install.php" to="emotinymce_install.php"/>
 		</copy>
+		<open src="posting.php">
+			<edit>
+				<find><![CDATA['S_BBCODE_ALLOWED'			=> ($bbcode_status) ? 1 : 0,]]></find>
+				<action type="after-add"><![CDATA[	// eMosbat TinyMCE
+	'EMOTINYMCE_ENABLE'			=> ($config['emotinymce_enable']) ? 1 : 0,
+	'EMOTINYMCE_RTL'			=> ($config['emotinymce_rtl']) ? 1 : 0,
+	'EMOTINYMCE_WIDTH'			=> ($config['emotinymce_width']),
+	'EMOTINYMCE_HEIGHT'			=> ($config['emotinymce_height']),
+	'EMOTINYMCE_SKIN'			=> ($config['emotinymce_skin'] != "" ? current(explode("@",$config['emotinymce_skin'])) : ""),
+	'EMOTINYMCE_SKIN_VAR'		=> ($config['emotinymce_skin'] != "" ? end(explode("@",$config['emotinymce_skin'])) : ""),
+	'EMOTINYMCE_SPELLCHECKER'	=> ($config['emotinymce_spellchecker']) ? 1 : 0,
+	'EMOTINYMCE_CAPTION'		=> ($config['emotinymce_caption']) ? 1 : 0,
+	'EMOTINYMCE_TIP'			=> ($config['emotinymce_tip']) ? 1 : 0,
+	'EMOTINYMCE_LANG'			=> ($config['emotinymce_lang']),
+	// eMosbat TinyMCE
+
+]]></action>
+			</edit>
+		</open>
 		<open src="styles/prosilver/template/posting_editor.html">
 			<edit>
 				<find><![CDATA[</script>
 ]]></find>
-				<action type="after-add"><![CDATA[<script type="text/javascript" src="{T_TEMPLATE_PATH}/tiny_mce/tiny_mce.js"></script>
-<script type="text/javascript" src="{T_TEMPLATE_PATH}/emo_tinymce.js"></script>
-<script type="text/javascript">
-
-var bbcode_images_path = "{T_IMAGES_PATH}bbcodes/";
-
-var bbtags2 = new Array('[b]','[/b]','[i]','[/i]','[u]','[/u]','[quote]','[/quote]','[code]','[/code]','[list]','[/list]','[list=]','[/list]','[img]','[/img]','[url]','[/url]','[flash=]', '[/flash]','[size=]','[/size]'<!-- BEGIN custom_tags -->, {custom_tags.BBCODE_NAME}<!-- END custom_tags -->);
-
-var la_arr = new Array('{LA_BBCODE_Q_HELP}','{LA_BBCODE_C_HELP}','{LA_BBCODE_L_HELP}','{LA_BBCODE_O_HELP}','{LA_BBCODE_LISTITEM_HELP}','{LA_BBCODE_D_HELP}');
-
-
-function custom_phpbb_html2bbcode(s)
-{
-		s = tinyMCE.trim(s);
-
-		<!-- BEGIN smiley -->
-		s = build_bbcode_regex(s,"<img src=\""+escapeReg("{smiley.SMILEY_IMG}")+"\"(.*?)\/>"," {smiley.A_SMILEY_CODE} ");
-		<!-- END smiley	-->
-
-		return s; 
-}
-
-function custom_phpbb_bbcode2html(s)
-{
-		s = tinyMCE.trim(s);
-
-		<!-- BEGIN smiley --> 
-		s = build_bbcode_regex(s,escapeReg("{smiley.A_SMILEY_CODE}")," <img src=\"{smiley.SMILEY_IMG}\" /> ");
-		<!-- END smiley	-->
-
-		return s; 
-}
-
-
-editor = tinyMCE.init({
-		theme_advanced_font_sizes : "Tiny=50%,Small=85%,Normal=100%,Large=150%,Huge=200%",
-		mode : "none",
-		height : 320,
-		convert_urls : false,
-		theme : "advanced",
-		//directionality : "rtl",
-		plugins: "bbcode2",
-		theme_advanced_buttons1 : "code,bold,italic,underline,undo,redo,<!-- IF S_LINKS_ALLOWED -->link,unlink,<!-- ENDIF --><!-- IF S_BBCODE_IMG -->image,<!-- ENDIF -->fontsizeselect,forecolor,removeformat",
-		theme_advanced_buttons2 : "quote,code2,list,list2,item,<!-- IF S_BBCODE_FLASH -->flash<!-- ENDIF -->",
-		theme_advanced_buttons3 : "<!-- BEGIN custom_tags -->{custom_tags.BBCODE_TAG},<!-- END custom_tags -->",
-		entity_encoding : "raw",
-		add_unload_trigger : false,
-		remove_linebreaks : false,
-		inline_styles : false,
-		convert_fonts_to_spans : false
-		,setup : function(ed) {
-				
-				
-				add_default_buttons(ed,la_arr);
-
-<!-- BEGIN custom_tags -->
-		        ed.addButton('{custom_tags.BBCODE_TAG}', {
-		        title : '{custom_tags.BBCODE_HELPLINE}',
-		        label : '{custom_tags.BBCODE_TAG}',
-		        image : bbcode_images_path+'{custom_tags.BBCODE_TAG}.gif',
-		        onclick : function() {
-		        	insert_bbcode(ed,bbtags2[{custom_tags.BBCODE_ID}],bbtags2[{custom_tags.BBCODE_ID}+1],false);
-		        }
-		        });
-<!-- END custom_tags -->
-
-		}
-});
-
-if({S_BBCODE_ALLOWED}==1)
-{
-	tinyMCE.execCommand("mceAddControl", true, "message");
-}
-
-</script>
+				<action type="after-add"><![CDATA[<!-- INCLUDE emotinymce_editor.html -->
 ]]></action>
 			</edit>
 			<edit>
 				<find><![CDATA[<!-- INCLUDE posting_buttons.html -->]]></find>
-				<action type="replace-with"><![CDATA[<!-- posting_buttons.html -->]]></action>
+				<action type="replace-with"><![CDATA[<!-- IF not EMOTINYMCE_ENABLE -->
+<!-- INCLUDE posting_buttons.html -->
+<!-- ENDIF -->
+]]></action>
 			</edit>
 		</open>
-		<diy-instructions lang="en"><![CDATA[- To display icon for custom BBCode, upload 24x24 pixels gif image with same name of custom bbcode to images/bbcodes folder. for example for a custom bbcode with this name: youtube, upload youtube.gif to images/bbcodes folder.
+		<php-installer><![CDATA[emotinymce_install.php]]></php-installer>
+		<diy-instructions lang="en"><![CDATA[*** PLEASE remove emotinymce_install.php after installation.
+
+- To display icon for custom BBCode, upload 24x24 pixels gif image with same name of custom bbcode to images/bbcodes folder. for example for a custom bbcode with this name: youtube, upload youtube.gif to images/bbcodes folder.
 
 - You may download latest version of tinymce and upload 'tiny_mce' folder to styles/prosilver/template folder. in this case do not forget to copy bbcode2 tinymce plugin to plugins folder.]]></diy-instructions>
 	</action-group>
