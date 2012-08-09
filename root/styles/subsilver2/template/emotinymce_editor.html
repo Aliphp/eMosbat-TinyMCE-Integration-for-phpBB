@@ -28,7 +28,7 @@ function custom_phpbb_bbcode2html(s)
 		s = tinyMCE.trim(s);
 
 		<!-- BEGIN smiley -->
-		s = build_bbcode_regex(s,"^"+escapeReg("{smiley.A_SMILEY_CODE}")+"$"," <img src=\"{smiley.SMILEY_IMG}\" /> ");
+		s = build_bbcode_regex(s,escapeReg("{smiley.A_SMILEY_CODE}")," <img src=\"{smiley.SMILEY_IMG}\" /> ");
 		<!-- END smiley	-->
 
 		return s; 
