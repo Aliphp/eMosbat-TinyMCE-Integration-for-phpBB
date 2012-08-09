@@ -64,6 +64,13 @@
 					<change><![CDATA[persian language support]]></change>
 				</changelog>
 			</entry>
+			<entry>
+				<date>2012-08-09</date>
+				<rev-version>1.5.1</rev-version>
+				<changelog lang="en">
+					<change><![CDATA[subsilver2 support added]]></change>
+				</changelog>
+			</entry>
 		</history>
 	</header>
 	<action-group>
@@ -76,6 +83,9 @@
 			<file from="root/styles/prosilver/template/tiny_mce/*.*" to="styles/prosilver/template/tiny_mce/*.*"/>
 			<file from="root/styles/prosilver/template/emo_tinymce.js" to="styles/prosilver/template/emo_tinymce.js"/>
 			<file from="root/styles/prosilver/template/emotinymce_editor.html" to="styles/prosilver/template/emotinymce_editor.html"/>
+			<file from="root/styles/subsilver2/template/tiny_mce/*.*" to="styles/subsilver2/template/tiny_mce/*.*"/>
+			<file from="root/styles/subsilver2/template/emo_tinymce.js" to="styles/subsilver2/template/emo_tinymce.js"/>
+			<file from="root/styles/subsilver2/template/emotinymce_editor.html" to="styles/subsilver2/template/emotinymce_editor.html"/>
 			<file from="root/emotinymce_install.php" to="emotinymce_install.php"/>
 		</copy>
 		<open src="posting.php">
@@ -100,8 +110,7 @@
 		<open src="includes/ucp/ucp_pm_compose.php">
 			<edit>
 				<find><![CDATA['S_BBCODE_ALLOWED'		=> ($bbcode_status) ? 1 : 0,]]></find>
-				<action type="after-add"><![CDATA[
-// eMosbat TinyMCE
+				<action type="after-add"><![CDATA[// eMosbat TinyMCE
 	'EMOTINYMCE_ENABLE'			=> ($config['emotinymce_enable']) ? 1 : 0,
 	'EMOTINYMCE_RTL'			=> ($config['emotinymce_rtl']) ? 1 : 0,
 	'EMOTINYMCE_WIDTH'			=> ($config['emotinymce_qwidth']),
@@ -134,6 +143,30 @@
 <!-- INCLUDE posting_buttons.html -->
 <!-- ENDIF -->
 ]]></action>
+			</edit>
+		</open>
+		<open src="styles/subsilver2/template/posting_body.html">
+			<edit>
+				<find><![CDATA[</script>]]></find>
+				<action type="after-add"><![CDATA[
+<!-- INCLUDE emotinymce_editor.html -->
+
+]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[<!-- INCLUDE posting_buttons.html -->]]></find>
+				<action type="replace-with"><![CDATA[
+<!-- IF not EMOTINYMCE_ENABLE -->
+<!-- INCLUDE posting_buttons.html -->
+<!-- ENDIF -->
+]]></action>
+			</edit>
+			<edit>
+				<find><![CDATA[<textarea name="message" rows="15" cols="76" tabindex="3" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onfocus="initInsertions();" style="width: 700px; height: 270px; min-width: 98%; max-width: 98%;">{MESSAGE}</textarea>]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[name="message"]]></inline-find>
+					<inline-action type="replace-with"><![CDATA[name="message" id="message"]]></inline-action>
+				</inline-edit>
 			</edit>
 		</open>
 		<php-installer><![CDATA[emotinymce_install.php]]></php-installer>
