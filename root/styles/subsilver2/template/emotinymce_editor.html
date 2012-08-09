@@ -14,7 +14,7 @@ var la_arr = new Array('{LA_BBCODE_Q_HELP}','{LA_BBCODE_C_HELP}','{LA_BBCODE_L_H
 
 function custom_phpbb_html2bbcode(s)
 {
-		s = tinyMCE.trim(s);
+		s = (s[0]!=' ' || s==''?' ':'')+s+(s[s.length-1]!=' ' || s==''?' ':'');
 
 		<!-- BEGIN smiley -->
 		s = build_bbcode_regex(s,"<img src=\""+escapeReg("{smiley.SMILEY_IMG}")+"\"(.*?)\/>"," {smiley.A_SMILEY_CODE} ");
@@ -25,10 +25,10 @@ function custom_phpbb_html2bbcode(s)
 
 function custom_phpbb_bbcode2html(s)
 {
-		s = tinyMCE.trim(s);
+		s = (s[0]!=' ' || s==''?' ':'')+s+(s[s.length-1]!=' ' || s==''?' ':'');
 
 		<!-- BEGIN smiley -->
-		s = build_bbcode_regex(s,escapeReg("{smiley.A_SMILEY_CODE}")," <img src=\"{smiley.SMILEY_IMG}\" /> ");
+		s = build_bbcode_regex(s,escapeReg(" {smiley.A_SMILEY_CODE} ")," <img src=\"{smiley.SMILEY_IMG}\" /> ");
 		<!-- END smiley	-->
 
 		return s; 
